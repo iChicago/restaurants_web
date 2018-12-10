@@ -16,10 +16,10 @@ session = DBSession()
 def HelloWorld():
     restaurant = session.query(Restaurant).first()
     items = session.query(MenuItem).filter_by(restaurant_id = restaurant.id)
-    output = '<html><body><ul>'
+    output = '<html><body>'
     for item in items:
-        output+= '<li>'+ item.name + '</li>'
-    output+= '</ul></body></html>'
+        output+= '<br>'+ item.name + '<br>' + item.price + '<br>' + item.description + '<br>'
+    output+= '</body></html>'
     return output
 
 
