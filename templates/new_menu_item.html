@@ -7,10 +7,19 @@
 <body>
 <h1>New Menu Item</h1>
 <form method='post'>
-    <label>Name:</label>
+    <label>Name</label><br>
     <input action="{{ url_for('new_menu_item', restaurant_id=restaurant_id) }}"
-            type="text" size="30" name="form_name" id="form_name">
-    <input type="submit" value="Create">
+            type="text" size="30" name="form_name" id="form_name"><br>
+    <label>Description</label><br>
+    <textarea action="{{ url_for('new_menu_item', restaurant_id=restaurant_id) }}"
+            type="text" name="form_description" id="form_description"></textarea><br>
+    <label>Price</label><br>
+    <input action="{{ url_for('new_menu_item', restaurant_id=restaurant_id) }}"
+            type="text" name="form_price" id="form_price"><br>
+    <label>Course</label><br>
+    <input action="{{ url_for('new_menu_item', restaurant_id=restaurant_id) }}"
+            type="text" name="form_course" id="form_course">
+    <input type="submit" value="Create"><br>
 </form>
 </body>
 </html>

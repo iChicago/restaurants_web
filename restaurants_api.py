@@ -32,8 +32,13 @@ def restaurant_menu(restaurant_id):
 # New menu items
 @app.route('/restaurants/<int:restaurant_id>/new', methods=['GET', 'POST'])
 def new_menu_item(restaurant_id):
+    # we use (request) to get data from the form.
     if request.method == 'POST':
-        new_item = MenuItem(name=request.form['form_name'], restaurant_id=restaurant_id)
+        new_item = MenuItem(name=request.form['form_name'],
+                            description=request.form['form_description'],
+                            price=request.form['form_price'],
+                            course=request.form['form_course'],
+                            restaurant_id=restaurant_id)
         session.add(new_item)
         session.commit()
         return redirect(url_for('restaurant_menu', restaurant_id=restaurant_id))
