@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Menu Item</title>
+</head>
+<body>
+<h1>Edit Menu Item</h1>
+<form method="post">
+    <label>Name</label><br>
+    <input action="{{ url_for('new_menu_item', restaurant_id=restaurant_id) }}"
+            type="text" name="form_name" id="form_name"
+            placeholder="{{item.name}}"><br>
+    <label>Description</label><br>
+    <textarea action="{{ url_for('new_menu_item', restaurant_id=restaurant_id) }}"
+            type="text" name="form_description" id="form_description"
+            placeholder="{{item.description}}"></textarea><br>
+    <label>Price</label><br>
+    <input action="{{ url_for('new_menu_item', restaurant_id=restaurant_id) }}"
+            type="text" name="form_price" id="form_price"
+            placeholder="item.price"><br>
+    <label>Course</label><br>
+    <input action="{{ url_for('new_menu_item', restaurant_id=restaurant_id) }}"
+            type="text" name="form_course" id="form_course"
+            placeholder="item.course"><br>
+    <input type="submit" value="Update"><br>
+    <a href="{{ url_for('restaurant_menu', restaurant_id=restaurant_id) }}">Cancel</a>
+</form>
+</body>
+</html>
