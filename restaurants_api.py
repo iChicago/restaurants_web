@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, request
+from flask import Flask, redirect, url_for, render_template, request, flash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Restaurant, MenuItem
@@ -11,7 +11,7 @@ session = DBSession()
 
 
 @app.route('/')
-@app.route('/hello')
+@app.route('/restaurants/')
 def hello_world():
     """List all restaurants on the home page"""
     restaurants = session.query(Restaurant).all()
@@ -41,6 +41,7 @@ def new_menu_item(restaurant_id):
                             restaurant_id=restaurant_id)
         session.add(new_item)
         session.commit()
+        flash("New menu item ({0}) was created".format(new_item.name))
         return redirect(url_for('restaurant_menu', restaurant_id=restaurant_id))
     else:
         return render_template('new_menu_item.html', restaurant_id=restaurant_id)
@@ -60,6 +61,7 @@ def edit_menu_item(restaurant_id, menu_id):
             edited_item.course = request.form['form_course']
         session.add(edited_item)
         session.commit()
+        flash("Menu item ({0}) was edited".format(edited_item.name))
         return redirect(url_for('restaurant_menu', restaurant_id=restaurant_id))
     else:
         return render_template(
@@ -72,14 +74,16 @@ def delete_menu_item(restaurant_id, menu_id):
     if request.method == 'POST':
         session.delete(item_to_delete)
         session.commit()
+        flash("Menu item ({0}) was deleted".format(item_to_delete.name))
         return redirect(url_for('restaurant_menu', restaurant_id=restaurant_id))
     else:
         return render_template(
             'delete_menu_item.html', item=item_to_delete)
 
 
-
 if __name__ == '__main__':
     # Reload if there is a change, Display debug messages
     app.debug = True
+    # Put mor secure key fo real app
+    app.secret_key = 'mySecretKey'
     app.run(host='0.0.0.0', port=5000)
