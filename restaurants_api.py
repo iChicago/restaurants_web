@@ -18,7 +18,8 @@ def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in range(32))
     loggin_session['state'] = state
-    return "The current session state is %s" %loggin_session['state']
+    # return "The current session state is %s" % login_session['state']
+    return render_template('login.html', STATE=state)
 
 
 @app.route('/')
@@ -52,7 +53,7 @@ def restaurant_one_menu_json(restaurant_id, menu_id):
     item = session.query(MenuItem).filter_by(id=menu_id).one()
     return jsonify(menu_items=[item.serialize])
 
-# New menu items
+
 @app.route('/restaurants/<int:restaurant_id>/new', methods=['GET', 'POST'])
 def new_menu_item(restaurant_id):
     # we use (request) to get data from the form.
