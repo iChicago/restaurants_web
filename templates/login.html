@@ -12,7 +12,7 @@
     <!-- GOOGLE PLUS SIGN IN BUTTON-->
     <div id="signinButton">
     <span class="g-signin"
-    data-scope="openid"
+    data-scope="openid email"
     data-clientid="839609327102-5lu3ju7sh3uqb8qj7in3g000llulidhq.apps.googleusercontent.com"
     data-redirecturi="postmessage"
     data-accesstype="offline"
@@ -42,7 +42,7 @@ function signInCallback(authResult) {
         if (result) {
           $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
          setTimeout(function() {
-          window.location.href = "/restaurant";
+          window.location.href = "/restaurants";
          }, 4000);
 
       } else if (authResult['error']) {
