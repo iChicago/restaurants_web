@@ -2,12 +2,23 @@ from flask import Flask, redirect, url_for, render_template, request, flash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Restaurant, MenuItem
-
+from flask import session as loggin_session
+import random, string #to generate random session key
 app = Flask(__name__)
 engine = create_engine('sqlite:///restaurantmenu.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
+
+# Create a state token to prevent request forgery.
+# Store it in the session for later validation.
+@app.route('/login')
+def showLogin():
+    state = ''.join(random.choice(string.ascii_uppercase + string.digits)
+                    for x in range(32))
+    loggin_session['state'] = state
+    return "The current session state is %s" %loggin_session['state']
 
 
 @app.route('/')
