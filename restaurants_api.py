@@ -1,9 +1,9 @@
 from flask import Flask, jsonify, redirect, url_for, render_template, request, flash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Restaurant, MenuItem
+from database_setup import Base, Restaurant, MenuItem, User
 from flask import session as login_session
-import random, string #to generate random session key
+import random, string
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 import json
@@ -147,6 +147,28 @@ def gdisconnect():
         return response
 
 
+def createUser(login_session):
+    newUser = User(name=login_session['username'], email=login_session[
+                   'email'], picture=login_session['picture'])
+    session.add(newUser)
+    session.commit()
+    user = session.query(User).filter_by(email=login_session['email']).one()
+    return user.id
+
+
+def getUserInfo(user_id):
+    user = session.query(User).filter_by(id=user_id).one()
+    return user
+
+
+def getUserID(email):
+    try:
+        user = session.query(User).filter_by(email=email).one()
+        return user.id
+    except:
+        return None
+
+
 @app.route('/')
 @app.route('/restaurants/')
 def hello_world():
@@ -184,12 +206,16 @@ def new_menu_item(restaurant_id):
     # we use (request) to get data from the form.
     if 'username' not in login_session:
         return redirect('/login')
+
+    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
+
     if request.method == 'POST':
         new_item = MenuItem(name=request.form['form_name'],
                             description=request.form['form_description'],
                             price=request.form['form_price'],
                             course=request.form['form_course'],
-                            restaurant_id=restaurant_id)
+                            restaurant_id=restaurant_id,
+                            user_id=restaurant.user_id)
         session.add(new_item)
         session.commit()
         flash("New menu item ({0}) was created".format(new_item.name))
